@@ -12,5 +12,4 @@ StayEase is a full-stack web application designed to help users discover, explor
 ### Tech Stack
 * **Frontend:** HTML5, CSS3, JavaScript (ES6+), Inter Font, Responsive Design
 * **Backend:** Node.js, Express.js, CORS
-* **AI & API Integration:** OpenAI API / Google Gemini API (or your chosen AI service)
 * **Database:** MongoDB Atlas Cloud, Mongoose ODM
