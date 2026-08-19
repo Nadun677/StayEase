@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StayEase Hub - Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #f8fafc;
+            --panel-white: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --accent-blue: #3b82f6;
+            --border-color: #e2e8f0;
+            --alert-bg: #fefce8;
+            --alert-text: #713f12;
+            --alert-border: #fef08a;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-dark); padding: 40px 20px; }
+        .dashboard-container { max-width: 1300px; margin: 0 auto; }
+        
+        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        h1 { font-size: 28px; font-weight: 700; color: var(--text-dark); }
+        .subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+        
+        .signout-btn { background-color: #64748b; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 500; cursor: pointer; }
+        .signout-btn:hover { background-color: #475569; }
+
+        .alert-banner { background-color: var(--alert-bg); color: var(--alert-text); border: 1px solid var(--alert-border); padding: 16px; border-radius: 8px; display: none; margin-bottom: 24px; font-size: 14px; font-weight: 500; }
+        
+        .table-wrapper { background: var(--panel-white); border: 1px solid var(--border-color); border-radius: 12px; overflow-x: auto; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05); }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; min-width: 900px; }
+        th { background-color: #f1f5f9; color: var(--text-muted); font-weight: 600; padding: 14px 20px; border-bottom: 1px solid var(--border-color); text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
+        td { padding: 16px 20px; border-bottom: 1px solid var(--border-color); vertical-align: top; }
+        tr:last-child td { border-bottom: none; }
+        
+        .prop-title { font-weight: 600; color: var(--text-dark); }
+        .cust-details { font-size: 12px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
+        .price-badge { font-weight: 700; color: var(--text-dark); }
+        .pay-method { font-size: 11px; color: #2563eb; background: #eff6ff; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 4px; font-weight: 500; }
+        
+        .requirements-list { display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
+        .req-tag { font-size: 11px; background: #f1f5f9; color: #334155; padding: 4px 8px; border-radius: 4px; font-weight: 500; word-break: break-word; }
+        
+        .room-badge { font-size: 11px; background: #e0f2fe; color: #0369a1; padding: 2px 6px; border-radius: 4px; font-weight: 600; display: inline-block; margin-top: 4px; }
+
+        /* Action buttons styling */
+        .btn-action-edit { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; padding: 6px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 12px; margin-right: 4px; }
+        .btn-action-edit:hover { background: #dcfce7; }
+        .btn-action-delete { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; padding: 6px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 12px; }
+        .btn-action-delete:hover { background: #fee2e2; }
+
+        .empty-state { padding: 40px; text-align: center; color: var(--text-muted); font-size: 15px; }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <div class="header-row">
+            <h1>StayEase Hub</h1>
+            <button class="signout-btn" onclick="window.location.href='index.html'">Sign Out</button>
+        </div>
+        <div class="subtitle">Live Cloud Reservation System Log</div>
+
+        <div class="alert-banner" id="errorBanner">
+            ⚠️ Failed to load logs. Ensure your server.js node engine is executing on port 3000 and your database is online.
+        </div>
+
+        <div class="table-wrapper">
+            <table id="logsTable">
+                <thead>
+                    <tr>
+                        <th style="width: 22%;">Accommodation Property</th>
+                        <th style="width: 22%;">Customer Info</th>
+                        <th style="width: 14%;">Guests & Rooms</th>
+                        <th style="width: 14%;">Check-In / Out</th>
+                        <th style="width: 16%;">Additional Info</th>
+                        <th style="width: 12%;">Total Paid</th>
+                        <th style="width: 10%;">Control Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="bookingsTableBody">
+                    <tr>
+                        <td colspan="7" class="empty-state">Loading real-time logs from MongoDB container...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const BASE_API_URL = 'http://localhost:3000/api/admin/bookings';
+
+        async function fetchLogs() {
+            const tableBody = document.getElementById('bookingsTableBody');
+            const errorBanner = document.getElementById('errorBanner');
+
+            try {
+                const response = await fetch(BASE_API_URL);
+                if (!response.ok) throw new Error('Network query failure.');
+
+                const data = await response.json();
+                errorBanner.style.display = 'none';
+                tableBody.innerHTML = '';
+
+                if (data.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="7" class="empty-state">No booking items found inside the database cluster collections.</td></tr>`;
+                    return;
+                }
+
+                let htmlContent = '';
+                data.forEach(booking => {
+                    // Custom requirements / Additional Info tags
+                    let reqTags = '<span style="color:#94a3b8; font-size:12px;">None</span>';
+                    if (booking.customRequirements && booking.customRequirements.length > 0) {
+                        reqTags = `<div class="requirements-list">` + 
+                            booking.customRequirements.map(req => `<div class="req-tag">${req}</div>`).join('') + 
+                            `</div>`;
+                    } else if (booking.additionalInfo) {
+                        reqTags = `<div class="requirements-list"><div class="req-tag">${booking.additionalInfo}</div></div>`;
+                    }
+
+                    const cleanName = (booking.customerName || 'Unknown').replace(/"/g, '&quot;');
+                    const cleanTitle = (booking.propertyTitle || 'N/A').replace(/"/g, '&quot;');
+                    const cleanEmail = booking.customerEmail || 'No email provided';
+                    const cleanPhone = booking.customerPhone || 'No phone provided';
+                    const roomCount = booking.rooms || booking.numberOfRooms || '1';
+                    const checkIn = booking.checkIn || '';
+                    const checkOut = booking.checkOut || '';
+                    const rawReqs = (booking.customRequirements || []).join(', ') || booking.additionalInfo || '';
+
+                    // Escape strings for onClick handler safely
+                    const escapedReqs = rawReqs.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                    const escapedTitle = cleanTitle.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                    const escapedName = cleanName.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+
+                    htmlContent += `
+                        <tr>
+                            <td>
+                                <div class="prop-title">${cleanTitle}</div>
+                            </td>
+                            <td>
+                                <div><strong>${cleanName}</strong></div>
+                                <div class="cust-details">✉️ ${cleanEmail}</div>
+                                <div class="cust-details">📞 ${cleanPhone}</div>
+                            </td>
+                            <td>
+                                <div>👥 ${booking.guestsSummary || '2 Guests'}</div>
+                                <div class="room-badge">🚪 Rooms: ${roomCount}</div>
+                            </td>
+                            <td>
+                                <div>🛫 In: <code>${checkIn}</code></div>
+                                <div style="margin-top:2px;">🛬 Out: <code>${checkOut}</code></div>
+                            </td>
+                            <td>
+                                ${reqTags}
+                            </td>
+                            <td>
+                                <div class="price-badge">LKR ${Number(booking.totalPaid || 0).toLocaleString()}</div>
+                                <div class="pay-method">${booking.paymentMethodSelected || 'Inquiry Request'}</div>
+                            </td>
+                            <td>
+                                <div style="display: flex; gap: 4px;">
+                                    <button class="btn-action-edit" onclick="triggerEditRecord('${booking._id}', '${escapedTitle}', '${escapedName}', '${roomCount}', '${checkIn}', '${checkOut}', '${escapedReqs}', ${booking.totalPaid || 0})">Edit</button>
+                                    <button class="btn-action-delete" onclick="triggerDeleteRecord('${booking._id}')">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                tableBody.innerHTML = htmlContent;
+
+            } catch (err) {
+                console.error("Dashboard engine rendering failure loop:", err);
+                errorBanner.style.display = 'block';
+                tableBody.innerHTML = `<tr><td colspan="7" class="empty-state" style="color:#ef4444;">Connection failed to database pipelines portals engine.</td></tr>`;
+            }
+        }
+
+        // --- FULL EDIT FUNCTION FOR ALL COLUMNS ---
+        async function triggerEditRecord(id, currentTitle, currentName, currentRooms, currentIn, currentOut, currentReqs, currentTotal) {
+            
+            // Step 1: Edit Accommodation Property
+            const newTitle = prompt("1/7: Modify Accommodation Property Title:", currentTitle);
+            if (newTitle === null) return;
+
+            // Step 2: Edit Customer Name
+            const newName = prompt("2/7: Modify Customer Name:", currentName);
+            if (newName === null) return;
+
+            // Step 3: Edit Rooms Count
+            const newRoomsStr = prompt("3/7: Modify Rooms Count:", currentRooms);
+            if (newRoomsStr === null) return;
+            const newRooms = parseInt(newRoomsStr) || 1;
+
+            // Step 4: Edit Check-In Date
+            const newIn = prompt("4/7: Modify Check-In Date (YYYY-MM-DD):", currentIn);
+            if (newIn === null) return;
+
+            // Step 5: Edit Check-Out Date
+            const newOut = prompt("5/7: Modify Check-Out Date (YYYY-MM-DD):", currentOut);
+            if (newOut === null) return;
+
+            // Step 6: Edit Additional Info / Requirements (comma-separated for tags)
+            const newReqsStr = prompt("6/7: Modify Additional Info / Custom Requirements (comma separated):", currentReqs);
+            if (newReqsStr === null) return;
+            const newReqsArray = newReqsStr.split(',').map(item => item.trim()).filter(Boolean);
+
+            // Step 7: Edit Total Paid
+            const newTotalStr = prompt("7/7: Modify Total Paid (LKR):", currentTotal);
+            if (newTotalStr === null) return;
+            const newTotal = parseFloat(newTotalStr);
+
+            if (isNaN(newTotal)) {
+                alert("Please input a valid numeric amount for total paid.");
+                return;
+            }
+
+            // Construct payload to send to PUT /api/admin/bookings/:id
+            const payload = {
+                propertyTitle: newTitle,
+                customerName: newName,
+                rooms: newRooms,
+                checkIn: newIn,
+                checkOut: newOut,
+                customRequirements: newReqsArray,
+                additionalInfo: newReqsStr,
+                totalPaid: newTotal
+            };
+
+            try {
+                const response = await fetch(`${BASE_API_URL}/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    alert("Reservation record updated successfully across all fields!");
+                    fetchLogs(); 
+                } else {
+                    alert("Server rejected modification request.");
+                }
+            } catch (err) {
+                console.error("Failed to commit database modifications:", err);
+                alert("Error connecting to server backend pipeline.");
+            }
+        }
+
+        //DELETE FUNCTION
+        async function triggerDeleteRecord(id) {
+            if (!confirm("Are you absolutely sure you want to permanently delete this reservation from MongoDB cloud records?")) return;
+
+            try {
+                const response = await fetch(`${BASE_API_URL}/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    alert("Reservation wiped successfully!");
+                    fetchLogs(); 
+                } else {
+                    alert("Server failed to clear document cluster reference entry.");
+                }
+            } catch (err) {
+                console.error("Pipeline breakdown removing entry:", err);
+                alert("Error connecting to server backend pipeline.");
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', fetchLogs);
+    </script>
+</body>
+</html>

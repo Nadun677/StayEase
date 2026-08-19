@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StayEase - Curated Experiences</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- TOP NAVBAR -->
+    <header>
+        <a href="index.html" class="logo">
+            <div class="logo-icon">▲</div>
+            stayease.
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="index.html">Explore Stays</a></li>
+            <li><a href="experiences.html" class="active">Experiences</a></li>
+            <li><a href="#">Premium Hosting</a></li>
+        </ul>
+
+        <div class="user-nav">
+            <a href="#" style="color:#6b21a8; text-decoration:none; font-weight:500;">Help Center</a>
+            <button class="signin-btn">Customer Sign In</button>
+        </div>
+    </header>
+
+    <!-- SEARCH & TAB CONTROL -->
+    <div class="search-container">
+        
+        <div class="tab-switcher">
+            <a href="index.html" class="tab-btn">Stays</a>
+            <a href="experiences.html" class="tab-btn active">Experiences</a>
+        </div>
+
+        <div class="search-bar">
+            <div class="search-field">
+                <label>WHERE</label>
+                <input type="text" placeholder="Search destinations">
+            </div>
+
+            <div class="search-field">
+                <label>CHECK IN</label>
+                <input type="text" placeholder="mm/dd/yyyy">
+            </div>
+
+            <div class="search-field">
+                <label>CHECK OUT</label>
+                <input type="text" placeholder="mm/dd/yyyy">
+            </div>
+
+            <div class="search-field">
+                <label>WHO</label>
+                <input type="text" value="2 Guests">
+            </div>
+
+            <button class="search-icon-btn">🔍</button>
+        </div>
+
+    </div>
+
+    <!-- EXPERIENCES LISTING GRID -->
+    <div class="gallery-container">
+        <h2>Top-Rated Luxury Experiences</h2>
+        <p style="color: #64748b; margin-top: 4px; margin-bottom: 20px;">Unforgettable host-led activities, private charters, and adventure tours.</p>
+
+        <div class="experience-grid">
+            
+            <div class="exp-card">
+                <div class="exp-img-wrapper">
+                    <span class="badge">Verified Host</span>
+                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=80" alt="Yacht">
+                </div>
+                <div class="exp-details">
+                    <div class="exp-rating">★ 4.98 (120 reviews)</div>
+                    <div class="exp-title">Private Catamaran Sunset Cruise</div>
+                    <div class="exp-price">From <span>$180</span> / person</div>
+                </div>
+            </div>
+
+            <div class="exp-card">
+                <div class="exp-img-wrapper">
+                    <span class="badge">Trending</span>
+                    <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=600&q=80" alt="Wine">
+                </div>
+                <div class="exp-details">
+                    <div class="exp-rating">★ 5.0 (84 reviews)</div>
+                    <div class="exp-title">Sommelier Masterclass & Estate Tasting</div>
+                    <div class="exp-price">From <span>$125</span> / person</div>
+                </div>
+            </div>
+
+            <div class="exp-card">
+                <div class="exp-img-wrapper">
+                    <span class="badge">Adventure</span>
+                    <img src="https://images.unsplash.com/photo-1508672019048-805479767389?auto=format&fit=crop&w=600&q=80" alt="Helicopter">
+                </div>
+                <div class="exp-details">
+                    <div class="exp-rating">★ 4.92 (45 reviews)</div>
+                    <div class="exp-title">Alpine Helicopter Glacier Flight</div>
+                    <div class="exp-price">From <span>$350</span> / person</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

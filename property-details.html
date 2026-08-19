@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Details | StayEase</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="property-details.css">
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Breadcrumb Navigation -->
+        <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+            <div>
+                <a href="index.html">Sri Lanka</a> &gt; 
+                <span id="breadcrumb-title">Dover Cottage</span>
+            </div>
+            <a href="index.html">Back to All Properties</a>
+        </nav>
+
+        <!-- Banner Image Gallery -->
+        <div class="gallery-banner">
+            <img id="gallery-img-1" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80" alt="Property Main View">
+            <img id="gallery-img-2" src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80" alt="Property Surroundings View">
+        </div>
+
+        <!-- Tab Bar Header -->
+        <div class="details-tab-bar">
+            <div class="tab-links">
+                <a href="#overview" class="active">Overview</a>
+                <a href="#facilities">Facilities</a>
+                <a href="#rooms">Rooms</a>
+                <a href="#reviews">Reviews</a>
+                <a href="#contact">Contact Details</a>
+            </div>
+            <button class="btn-tab-inquiry" onclick="document.getElementById('inquiryForm').scrollIntoView({behavior: 'smooth'})">Booking Inquiry</button>
+        </div>
+
+        <!-- Two Column Layout -->
+        <div class="property-grid-layout">
+            
+            <!-- LEFT COLUMN: Details -->
+            <div class="left-content-column">
+                
+                <!-- Overview Card -->
+                <section class="section-card" id="overview">
+                    <h1 id="prop-title">Dover Cottage</h1>
+                    <div class="location-subtitle" id="prop-location">📍 Nuwara Eliya, Nuwara Eliya District, Central Province</div>
+                    <hr class="section-divider">
+                    <p class="overview-text" id="prop-description">
+                        Conveniently situated in the city center part, this property puts you close to popular local attractions and dining options.
+                    </p>
+                    <div class="price-range" id="prop-price">$210 / night</div>
+                </section>
+
+                <!-- Facilities Card -->
+                <section class="section-card" id="facilities">
+                    <h2>Facilities</h2>
+                    <hr class="section-divider">
+                    <div class="facilities-list">
+                        <div class="facility-item">🚗 Free Parking</div>
+                        <div class="facility-item">🍽️ On-site Dining</div>
+                        <div class="facility-item">🛎️ Room Service</div>
+                        <div class="facility-item">🕒 24 Hour Front Desk</div>
+                    </div>
+                </section>
+
+                <!-- Rooms Card -->
+                <section class="section-card" id="rooms">
+                    <h2>Rooms</h2>
+                    <hr class="section-divider">
+                    <div class="rooms-flex-container">
+                        
+                        <!-- Room 1 -->
+                        <div class="room-card">
+                            <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=500&q=80" alt="Deluxe Room">
+                            <div class="room-card-body">
+                                <div class="room-title">Deluxe Room</div>
+                                <div class="room-status">3 Rooms Available | Free Cancellation</div>
+                                <div class="room-parking-info">Parking: Pay at the hotel</div>
+                                <div class="room-card-footer">
+                                    <span class="room-price" id="room1-price">$210 / night</span>
+                                    <span>🛏️ ☕</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Room 2 -->
+                        <div class="room-card">
+                            <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=500&q=80" alt="Luxury Suite">
+                            <div class="room-card-body">
+                                <div class="room-title">Luxury Suite</div>
+                                <div class="room-status">2 Rooms Available | Breakfast Included</div>
+                                <div class="room-parking-info">Parking: Pay at the hotel</div>
+                                <div class="room-card-footer">
+                                    <span class="room-price" id="room2-price">$250 / night</span>
+                                    <span>🛏️ ☕ 🚿</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Reviews & Ratings Section -->
+                <section class="section-card" id="reviews">
+                    <h2>Reviews & Ratings</h2>
+                    <hr class="section-divider">
+                    
+                    <!-- Submit Review Form -->
+                    <form id="reviewForm" class="inquiry-form" onsubmit="handleReviewSubmit(event)" style="margin-bottom: 30px;">
+                        <h3>Leave a Review</h3>
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <input type="email" id="emailInput" placeholder="Your Email / Username" required>
+                            </div>
+                            <div class="form-group">
+                                <select id="overallSelect" required>
+                                    <option value="5">Overall Rating: 5 ★★★★★</option>
+                                    <option value="4">Overall Rating: 4 ★★★★☆</option>
+                                    <option value="3">Overall Rating: 3 ★★★☆☆</option>
+                                    <option value="2">Overall Rating: 2 ★★☆☆☆</option>
+                                    <option value="1">Overall Rating: 1 ★☆☆☆☆</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row-3">
+                            <div class="form-group">
+                                <label class="form-field-label" for="cleanlinessInput">Cleanliness (1-5)</label>
+                                <input type="number" id="cleanlinessInput" min="1" max="5" value="5" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-field-label" for="locationInput">Location (1-5)</label>
+                                <input type="number" id="locationInput" min="1" max="5" value="5" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-field-label" for="serviceInput">Service (1-5)</label>
+                                <input type="number" id="serviceInput" min="1" max="5" value="5" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <textarea id="commentInput" placeholder="Write your feedback here..." rows="3"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-submit-inquiry">Submit Review</button>
+                    </form>
+
+                    <!-- Reviews List Container -->
+                    <div id="reviewsList">
+                        <p style="color: #666;">Loading guest reviews...</p>
+                    </div>
+                </section>
+
+                <!-- Contact Details Card -->
+                <section class="section-card" id="contact">
+                    <h2>Contact Details</h2>
+                    <hr class="section-divider">
+                    <div class="contact-grid">
+                        <div class="contact-info-list">
+                            <div class="contact-info-item">
+                                <strong>Address:</strong>
+                                <span id="prop-address">15/1, 3rd lane, Main Road, Nuwara Eliya</span>
+                            </div>
+                            <div class="contact-info-item">
+                                <strong>Email:</strong>
+                                <span>reservations@stayease.lk</span>
+                            </div>
+                            <div class="contact-info-item">
+                                <strong>Phone:</strong>
+                                <span>+94 77 714 7128</span>
+                            </div>
+                            <div class="contact-info-item">
+                                <strong>WhatsApp:</strong>
+                                <span>+94 77 714 7128</span>
+                            </div>
+                        </div>
+                        <div class="contact-map-frame">
+                            <iframe 
+                                title="Property Location Map"
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15843.83272990616!2d80.7712!3d6.9497!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae380434316a3a7%3A0x892a012d93e25b1!2sNuwara%20Eliya!5e0!3m2!1sen!2slk!4v1680000000000!5m2!1sen!2slk" 
+                                allowfullscreen="" 
+                                loading="lazy">
+                            </iframe>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- RIGHT COLUMN: Booking Inquiry Sidebar -->
+            <aside class="right-sidebar-column">
+                <div class="sidebar-inquiry-box" id="inquiryForm">
+                    <h3>Booking Inquiry</h3>
+                    <p class="inquiry-subtext">Note: This sends an inquiry directly to the host. You will receive confirmation via email/phone.</p>
+
+                    <form class="inquiry-form" onsubmit="handleInquirySubmit(event)">
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <input type="text" id="inquiryName" placeholder="Your Name" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" id="inquiryEmail" placeholder="Your Email" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <input type="tel" id="inquiryPhone" placeholder="Your Phone" required>
+                            </div>
+                            <div class="form-group">
+                                <select id="inquiryRoomType" required>
+                                    <option value="">Select Room Type</option>
+                                    <option value="Deluxe Room">Deluxe Room</option>
+                                    <option value="Luxury Suite">Luxury Suite</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <label class="form-field-label" for="inquiryCheckIn">Check In</label>
+                                <input type="date" id="inquiryCheckIn" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-field-label" for="inquiryCheckOut">Check Out</label>
+                                <input type="date" id="inquiryCheckOut" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row-3">
+                            <div class="form-group">
+                                <label class="form-field-label" for="inquiryRooms">Rooms</label>
+                                <input type="number" id="inquiryRooms" placeholder="Rooms" min="1" value="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-field-label" for="inquiryAdults">Adults</label>
+                                <input type="number" id="inquiryAdults" placeholder="Adults" min="1" value="2" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-field-label" for="inquiryChildren">Children</label>
+                                <input type="number" id="inquiryChildren" placeholder="Children" min="0" value="0">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <textarea id="inquiryMessage" placeholder="Additional Information" rows="3"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-submit-inquiry">Submit Booking</button>
+                    </form>
+                </div>
+            </aside>
+
+        </div>
+
+    </div>
+
+    <script>
+        let currentProperty = null;
+
+        function getPropertyId() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('id')) return urlParams.get('id');
+            if (currentProperty && (currentProperty._id || currentProperty.id)) {
+                return currentProperty._id || currentProperty.id;
+            }
+            return null;
+        }
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            const rawData = sessionStorage.getItem('selectedProperty');
+            if (rawData) {
+                currentProperty = JSON.parse(rawData);
+
+                // Update text fields
+                document.getElementById('breadcrumb-title').innerText = currentProperty.title || 'Property Details';
+                document.getElementById('prop-title').innerText = currentProperty.title || 'Property Details';
+                document.title = `${currentProperty.title || 'Property'} - Details`;
+                
+                if (currentProperty.location) {
+                    document.getElementById('prop-location').innerText = `📍 ${currentProperty.location}`;
+                    document.getElementById('prop-address').innerText = currentProperty.location;
+                }
+
+                if (currentProperty.price) {
+                    const rawPrice = Number(currentProperty.price);
+                    const formattedPrice = typeof rawPrice === 'number' && !isNaN(rawPrice) 
+                        ? `$${rawPrice} / night` 
+                        : `${currentProperty.price} / night`;
+
+                    document.getElementById('prop-price').innerText = formattedPrice;
+                    document.getElementById('room1-price').innerText = formattedPrice;
+                }
+
+                if (currentProperty.description) {
+                    document.getElementById('prop-description').innerText = currentProperty.description;
+                }
+
+                if (currentProperty.image) {
+                    document.getElementById('gallery-img-1').src = currentProperty.image;
+                }
+            }
+
+            await fetchPropertyReviews();
+        });
+
+        // Submit Booking Inquiry to Backend
+        async function handleInquirySubmit(e) {
+            e.preventDefault();
+
+            const inquiryData = {
+                propertyTitle: currentProperty ? currentProperty.title : "Dover Cottage",
+                customerName: document.getElementById('inquiryName').value.trim(),
+                customerEmail: document.getElementById('inquiryEmail').value.trim(),
+                customerPhone: document.getElementById('inquiryPhone').value.trim(),
+                checkIn: document.getElementById('inquiryCheckIn').value,
+                checkOut: document.getElementById('inquiryCheckOut').value,
+                guestsSummary: `${document.getElementById('inquiryAdults').value} Adults, ${document.getElementById('inquiryChildren').value} Children`,
+                customRequirements: [
+                    `Room Type: ${document.getElementById('inquiryRoomType').value}`,
+                    `Rooms: ${document.getElementById('inquiryRooms').value}`,
+                    document.getElementById('inquiryMessage').value.trim()
+                ].filter(Boolean),
+                paymentMethodSelected: "Inquiry Request",
+                baseRate: currentProperty ? currentProperty.price : 210,
+                totalPaid: 0
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/api/bookings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(inquiryData)
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert('Your booking inquiry has been submitted successfully!');
+                    e.target.reset();
+                } else {
+                    alert('Submission failed: ' + (data.message || 'Unknown error'));
+                }
+            } catch (err) {
+                console.error("Inquiry Submission Error:", err);
+                alert('Could not connect to backend server. Please verify node server.js is running.');
+            }
+        }
+
+        // Submit Rating & Review to Backend
+        async function handleReviewSubmit(e) {
+            e.preventDefault();
+
+            const propertyId = getPropertyId();
+            if (!propertyId) {
+                alert('Property ID could not be identified. Please ensure you selected a valid property.');
+                return;
+            }
+
+            const reviewPayload = {
+                propertyId: String(propertyId),
+                userName: document.getElementById('emailInput').value.trim(),
+                rating: Number(document.getElementById('overallSelect').value),
+                cleanliness: Number(document.getElementById('cleanlinessInput').value),
+                location: Number(document.getElementById('locationInput').value),
+                service: Number(document.getElementById('serviceInput').value),
+                comment: document.getElementById('commentInput').value.trim()
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/api/reviews', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(reviewPayload)
+                });
+
+                const data = await response.json();
+                if (response.ok && data.success) {
+                    alert('Review submitted successfully!');
+                    document.getElementById('reviewForm').reset();
+                    await fetchPropertyReviews(); // Refresh review list dynamically
+                } else {
+                    throw new Error(data.message || 'Could not submit rating.');
+                }
+            } catch (error) {
+                console.error('Rating Submission Error:', error);
+                alert('Could not submit rating. Check backend server connection.');
+            }
+        }
+
+        // Fetch and render reviews from Backend
+        async function fetchPropertyReviews() {
+            const propertyId = getPropertyId();
+            const reviewsContainer = document.getElementById('reviewsList');
+
+            if (!propertyId) {
+                reviewsContainer.innerHTML = '<p style="color: #666;">No property selected to display reviews.</p>';
+                return;
+            }
+
+            try {
+                const res = await fetch(`http://localhost:3000/api/reviews?propertyId=${propertyId}`);
+                const data = await res.json();
+
+                if (data.success && data.data && data.data.length > 0) {
+                    reviewsContainer.innerHTML = data.data.map(review => `
+                        <div style="border-bottom: 1px solid #eee; padding: 12px 0;">
+                            <div style="display: flex; justify-content: space-between; font-weight: 600; color: #333;">
+                                <span>${review.userName}</span>
+                                <span style="color: #f39c12;">★ ${review.rating} / 5</span>
+                            </div>
+                            <p style="margin: 6px 0; color: #555;">${review.comment || 'No comment provided.'}</p>
+                            <small style="color: #999;">
+                                Cleanliness: ${review.cleanliness}/5 | Location: ${review.location}/5 | Service: ${review.service}/5
+                            </small>
+                        </div>
+                    `).join('');
+                } else {
+                    reviewsContainer.innerHTML = '<p style="color: #666;">No reviews submitted yet. Be the first to leave a review!</p>';
+                }
+            } catch (err) {
+                console.error('Error loading reviews:', err);
+                reviewsContainer.innerHTML = '<p style="color: #666;">Could not load existing reviews.</p>';
+            }
+        }
+    </script>
+</body>
+</html>

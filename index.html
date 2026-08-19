@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StayEase Luxury Travel | Premium Accommodations & Experiences</title>
+
+    <!-- Google Fonts Integration -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5 CSS Integration for Ratings & Component Styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- NAVBAR HEADER -->
+    <header class="global-nav">
+        <div class="logo-container" onclick="window.location.reload()">
+            <div class="logo-icon"><span>▲</span><span>☰</span></div>
+            <span class="logo">stayease</span>
+        </div>
+        <nav class="nav-links-group">
+            <a href="javascript:void(0)" id="navLinkStays" class="nav-link active" onclick="switchTab('stays')">Home</a>
+            <a href="javascript:void(0)" id="navLinkHotels" class="nav-link" onclick="switchTab('stays')">Hotels</a>
+            <a href="javascript:void(0)" id="navLinkExp" class="nav-link" onclick="switchTab('experiences')">Visit Sri Lanka</a>
+            <a href="javascript:void(0)" id="navLinkHost" class="nav-link" onclick="switchTab('hosting')">List Your Property</a>
+        </nav>
+        <div class="nav-actions">
+            <span id="userGreeting"></span>
+            <a href="javascript:void(0)" class="nav-link nav-link-help" onclick="openHelpCenterModal()">Help Center</a>
+            <a href="javascript:void(0)" class="auth-btn" id="navAuthBtn" onclick="openCustomerAuthModal()">Customer Sign In</a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero-banner-wrapper">
+        <div class="hero-subtag">Book your Stay</div>
+        <h1 class="hero-title-fancy">Visit Sri Lanka</h1>
+        <p class="hero-description">Search out the exclusive stays for your vacation in Sri Lanka</p>
+        <div class="hero-divider"></div>
+
+        <!-- GLASSMORPHISM SEARCH CONSOLE -->
+        <div class="glass-search-console" id="searchConsoleContainer">
+            <div class="glass-search-grid">
+                <div class="glass-input-box">
+                    <span>📍</span>
+                    <input type="text" placeholder="Where are you going to ?" id="searchWhere" oninput="loadCatalog()">
+                </div>
+                <div class="glass-input-box">
+                    <span>🏨</span>
+                    <select id="propertyTypeSelect" onchange="loadCatalog()">
+                        <option value="" selected>Kind of property are you looking for ?</option>
+                        <option value="Beach Resort">Beach Resort</option>
+                        <option value="Villa">Luxury Villa</option>
+                        <option value="Chalet">Chalet</option>
+                        <option value="Bungalow">Tea Estate Bungalow</option>
+                    </select>
+                </div>
+                <button class="btn-search-hotels" onclick="loadCatalog()">Search Hotels</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN DISPLAY GRID: STAYS PORTAL -->
+    <main class="catalog-container" id="staysContainer">
+        <div class="catalog-header-row">
+            <div>
+                <div class="section-tag">Inspirations</div>
+                <h2 class="section-title">Trending Sri Lanka Collections</h2>
+            </div>
+            <button class="btn-filter" onclick="resetSearchFilters()">🎛️ Filters</button>
+        </div>
+        <div class="properties-grid" id="propertiesDisplayGrid"></div>
+
+        <!-- ================= GUEST RATINGS DISPLAY SECTION ================= -->
+        <section class="container my-5" id="ratingsDisplaySection">
+            <div class="card border-0 shadow-sm p-4 rounded-4 bg-white">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <span class="badge bg-primary-subtle text-primary fw-bold px-3 py-2 rounded-pill">Verified Guest Feedback</span>
+                        <h3 class="fw-bold mt-2 mb-0" id="reviewPropertyTitle">The Grand Ocean Retreat & Spa - Guest Ratings</h3>
+                    </div>
+                    <button class="btn btn-primary fw-semibold rounded-pill px-4" onclick="openRatingModal()">✍️ Add Rating</button>
+                </div>
+
+                <div class="row align-items-center mb-4">
+                    <!-- Left Score -->
+                    <div class="col-md-4 text-center border-end pb-3 pb-md-0">
+                        <h1 class="display-2 fw-bold text-dark mb-0" id="overallScore">5.0</h1>
+                        <div class="text-warning my-1 fs-5">★ ★ ★ ★ ★</div>
+                        <p class="text-muted mb-0">Based on <span id="totalReviewsCount" class="fw-bold">0</span> verified reviews</p>
+                    </div>
+
+                    <!-- Star Percentages -->
+                    <div class="col-md-8 ps-md-4">
+                        <h6 class="fw-bold mb-3">Rating Breakdown</h6>
+                        
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="me-2 small text-muted" style="width: 50px;">5 Stars</span>
+                            <div class="progress flex-grow-1 me-3" style="height: 8px;">
+                                <div class="progress-bar bg-warning" id="bar5" role="progressbar" style="width: 0%;"></div>
+                            </div>
+                            <span class="small text-muted" id="percent5" style="width: 35px; text-align: right;">0%</span>
+                        </div>
+
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="me-2 small text-muted" style="width: 50px;">4 Stars</span>
+                            <div class="progress flex-grow-1 me-3" style="height: 8px;">
+                                <div class="progress-bar bg-warning" id="bar4" role="progressbar" style="width: 0%;"></div>
+                            </div>
+                            <span class="small text-muted" id="percent4" style="width: 35px; text-align: right;">0%</span>
+                        </div>
+
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="me-2 small text-muted" style="width: 50px;">3 Stars</span>
+                            <div class="progress flex-grow-1 me-3" style="height: 8px;">
+                                <div class="progress-bar bg-warning" id="bar3" role="progressbar" style="width: 0%;"></div>
+                            </div>
+                            <span class="small text-muted" id="percent3" style="width: 35px; text-align: right;">0%</span>
+                        </div>
+
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="me-2 small text-muted" style="width: 50px;">2 Stars</span>
+                            <div class="progress flex-grow-1 me-3" style="height: 8px;">
+                                <div class="progress-bar bg-warning" id="bar2" role="progressbar" style="width: 0%;"></div>
+                            </div>
+                            <span class="small text-muted" id="percent2" style="width: 35px; text-align: right;">0%</span>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            <span class="me-2 small text-muted" style="width: 50px;">1 Star</span>
+                            <div class="progress flex-grow-1 me-3" style="height: 8px;">
+                                <div class="progress-bar bg-warning" id="bar1" role="progressbar" style="width: 0%;"></div>
+                            </div>
+                            <span class="small text-muted" id="percent1" style="width: 35px; text-align: right;">0%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="text-muted opacity-25">
+
+                <!-- Category Averages -->
+                <div class="row g-3 pt-2">
+                    <div class="col-md-4">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="small fw-semibold">Cleanliness</span>
+                            <span class="small fw-bold" id="cleanlinessScore">5.0</span>
+                        </div>
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar bg-success" id="cleanlinessBar" role="progressbar" style="width: 100%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="small fw-semibold">Location</span>
+                            <span class="small fw-bold" id="locationScore">5.0</span>
+                        </div>
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar bg-success" id="locationBar" role="progressbar" style="width: 100%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="small fw-semibold">Service</span>
+                            <span class="small fw-bold" id="serviceScore">5.0</span>
+                        </div>
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar bg-success" id="serviceBar" role="progressbar" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BOOKING HISTORY SECTION -->
+        <section id="booking-history-section">
+            <h2 class="booking-history-title">Check Your Booking History</h2>
+            
+            <div class="booking-search-row">
+                <input 
+                    type="text" 
+                    id="history-phone-input" 
+                    placeholder="Enter your email address or registered phone number..." 
+                />
+                <button 
+                    onclick="fetchBookingHistory()" 
+                    class="btn-search-bookings"
+                >
+                    Search Bookings
+                </button>
+            </div>
+
+            <!-- Results Container -->
+            <div id="history-results"></div>
+        </section>
+    </main>
+
+    <!-- MAIN DISPLAY GRID EXPERIENCES PORTAL -->
+    <main class="catalog-container" id="experiencesContainer">
+        <div class="catalog-header-row">
+            <div>
+                <div class="section-tag">Curated Activities</div>
+                <h2 class="section-title">Top-Rated Luxury Experiences</h2>
+            </div>
+            <button class="btn-filter">🎛️ Filters</button>
+        </div>
+
+        <div class="properties-grid">
+            <div class="property-luxury-card">
+                <div class="image-frame">
+                    <span class="premium-badge">Verified Host</span>
+                    <button class="wish-action-btn" onclick="event.stopPropagation()">♡</button>
+                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=80" alt="Yacht Charter">
+                </div>
+                <div class="card-meta-row">
+                    <h4 class="property-title">Mirissa Whale Watching Cruise</h4>
+                    <span class="rating-indicator">★ 4.98</span>
+                </div>
+                <p class="property-geo">📍 Mirissa, Sri Lanka</p>
+                <div class="card-price-row">
+                    <span class="property-price"><strong>$120</strong> <span>/ person</span></span>
+                    <button class="btn-action-reserve" onclick="alert('Booking feature coming soon!')">Book Activity</button>
+                </div>
+            </div>
+
+            <div class="property-luxury-card">
+                <div class="image-frame">
+                    <span class="premium-badge">Trending</span>
+                    <button class="wish-action-btn" onclick="event.stopPropagation()">♡</button>
+                    <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=600&q=80" alt="Tea Tasting">
+                </div>
+                <div class="card-meta-row">
+                    <h4 class="property-title">Nuwara Eliya Tea Estate Tour</h4>
+                    <span class="rating-indicator">★ 5.0</span>
+                </div>
+                <p class="property-geo">📍 Nuwara Eliya, Sri Lanka</p>
+                <div class="card-price-row">
+                    <span class="property-price"><strong>$85</strong> <span>/ person</span></span>
+                    <button class="btn-action-reserve" onclick="alert('Booking feature coming soon!')">Book Activity</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- PREMIUM HOSTING PORTAL -->
+    <main class="catalog-container" id="hostingContainer">
+        <div class="host-banner">
+            <div class="host-banner-content">
+                <span class="host-program-tag">Host Partner Program</span>
+                <h1 class="host-banner-title">Turn Your Luxury Property Into Extra Income</h1>
+                <p class="host-banner-desc">Join StayEase Premium Hosting to reach high-net-worth travellers worldwide with full property protection and dedicated host support.</p>
+            </div>
+
+            <div class="host-calc-card">
+                <span class="host-calc-label">Estimated Monthly Earnings</span>
+                <div id="calcOutput">$3,500</div>
+                <p class="host-calc-nights"><span id="calcNightsLabel">10</span> nights @ $350/night</p>
+                <input type="range" id="calcNightsSlider" min="1" max="30" value="10" oninput="calculateHostEarnings(this.value)">
+            </div>
+        </div>
+
+        <div class="host-form-card">
+            <h3 class="host-form-title">List Your Property</h3>
+            <p class="host-form-subtitle">Fill in the details below to submit your luxury property to our catalog.</p>
+
+            <form id="hostPropertyForm" onsubmit="handleHostSubmission(event)">
+                <div class="form-group-full">
+                    <label class="form-label-custom">Property Title</label>
+                    <input type="text" id="hostTitle" placeholder="e.g. Oceanfront Villa with Private Pool" required class="segment-input form-input-styled">
+                </div>
+
+                <div class="form-group-half">
+                    <label class="form-label-custom">Location</label>
+                    <input type="text" id="hostLocation" placeholder="e.g. Galle, Sri Lanka" required class="segment-input form-input-styled">
+                </div>
+
+                <div class="form-group-half">
+                    <label class="form-label-custom">Price per Night ($ USD)</label>
+                    <input type="number" id="hostPrice" placeholder="350" min="50" required class="segment-input form-input-styled">
+                </div>
+
+                <div class="form-group-full">
+                    <label class="form-label-custom">Image URL</label>
+                    <input type="url" id="hostImage" placeholder="https://images.unsplash.com/..." required class="segment-input form-input-styled">
+                </div>
+
+                <div class="form-group-full">
+                    <label class="form-label-custom">Perks / Amenities (comma-separated)</label>
+                    <input type="text" id="hostPerks" placeholder="Private Pool, Ocean View, Free Wi-Fi, Chef Included" class="segment-input form-input-styled">
+                </div>
+
+                <div class="form-submit-wrapper">
+                    <button type="submit" class="btn-modal-reserve btn-full-submit">Submit Property Listing</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- FULLY RESTORED DETAILED HELP CENTER MODAL OVERLAY -->
+    <div class="modal-overlay" id="helpCenterModal">
+        <div class="premium-modal-box premium-modal-box-help">
+            
+            <!-- Close Trigger -->
+            <button class="modal-close-trigger modal-close-trigger-styled" onclick="closeHelpCenterModal()">×</button>
+
+            <!-- Header Title -->
+            <div class="help-header">
+                <span class="help-header-icon">🎧</span>
+                <h2 class="help-header-title">StayEase Help & Support Center</h2>
+                <p class="help-header-desc">Everything you need to know about your bookings, stays, and hosting.</p>
+            </div>
+
+            <!-- Live Search Box -->
+            <div class="help-search-wrapper">
+                <input type="text" id="helpSearchInput" placeholder="🔍 Search help articles (e.g. refund, check-in, cancel, deposit)..." onkeyup="filterHelpTopics()">
+            </div>
+
+            <!-- Quick Category Filter Buttons -->
+            <div class="faq-categories-row">
+                <button onclick="filterFaqCategory('all', event)" class="faq-cat-btn active">All Topics</button>
+                <button onclick="filterFaqCategory('booking', event)" class="faq-cat-btn">Bookings & Cancellations</button>
+                <button onclick="filterFaqCategory('payment', event)" class="faq-cat-btn">Payments & Refunds</button>
+                <button onclick="filterFaqCategory('hosting', event)" class="faq-cat-btn">Property Hosting</button>
+                <button onclick="filterFaqCategory('safety', event)" class="faq-cat-btn">Safety & Security</button>
+            </div>
+
+            <!-- Comprehensive Article List -->
+            <div id="faqListContainer">
+                
+                <div class="faq-item" data-category="booking" onclick="toggleFaq(this)">
+                    <div class="faq-item-header">
+                        <span>How do I cancel or modify my hotel reservation?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        You can manage, reschedule, or cancel your booking through your account dashboard or by searching your booking using your email or phone number in the Booking History section. Cancellations made at least 48 hours prior to check-in qualify for a full refund.
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="payment" onclick="toggleFaq(this)">
+                    <div class="faq-item-header">
+                        <span>What payment methods are accepted on StayEase?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        We accept major credit/debit cards (Visa, MasterCard, American Express), online bank transfers, and selected local payment gateways in Sri Lanka (LKR & USD supported). All payments are encrypted via secure SSL channels.
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="payment" onclick="toggleFaq(this)">
+                    <div class="faq-item-header">
+                        <span>How long does it take to process a refund?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        Approved refunds are initiated immediately by our automated system. Depending on your issuing bank, the credited amount will appear in your bank statement within 5 to 10 business days.
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="booking" onclick="toggleFaq(this)">
+                    <div class="faq-item-header">
+                        <span>What are standard check-in and check-out times?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        Standard check-in is usually at 2:00 PM local time, and check-out is by 11:00 AM. If you require early check-in or late check-out, you can request it directly with the property host via special requests upon confirmation.
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="hosting" onclick="toggleFaq(this)">
+                    <div class="faq-item-header">
+                        <span>How can I list my villa or hotel property?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        Click on the <strong>'List Your Property'</strong> link in the main navigation menu, complete the listing details (title, location, nightly rate, image URL, and amenities), and submit. Your property will go through a quick review before going live.
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="safety" onclick="toggleFaq(this)">
+                    <div class="faq-item-header">
+                        <span>Are properties verified for guest safety?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, every property listed on StayEase marked with a 'Verified Luxury' badge undergoes strict identity checks, health & safety compliance, and physical spot-checks to guarantee authentic luxury stays.
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Footer Action Card -->
+            <div class="help-footer-card">
+                <div>
+                    <strong class="help-footer-title">Need personalized help?</strong>
+                    <span class="help-footer-subtitle">Chat with our AI Concierge or connect with support.</span>
+                </div>
+                <button onclick="openAiChat()" class="btn-live-chat">
+                    💬 Live AI Chat
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI CONCIERGE CHATBOT WIDGET -->
+    <div id="aiChatWidget">
+        <div class="chat-header">
+            <div class="chat-header-info">
+                <div class="chat-status-dot"></div>
+                <div>
+                    <strong class="chat-title-main">StayEase AI Support</strong>
+                    <span class="chat-title-sub">Concierge Assistant</span>
+                </div>
+            </div>
+            <button onclick="closeAiChat()" class="chat-close-btn">×</button>
+        </div>
+
+        <div id="aiChatMessages">
+            <div class="ai-message-bubble">
+                Hello! 👋 I'm your StayEase Concierge AI. How can I help you with your stays, bookings, or hosting today?
+            </div>
+        </div>
+
+        <form onsubmit="handleAiSendMessage(event)" class="ai-chat-form">
+            <input type="text" id="aiChatInput" placeholder="Ask a question...">
+            <button type="submit" class="btn-chat-send">Send</button>
+        </form>
+    </div>
+
+    <!-- CUSTOMER AUTHENTICATION MODAL -->
+    <div class="modal-overlay" id="customerAuthModal">
+        <div class="premium-modal-box">
+            <button class="modal-close-trigger" onclick="closeCustomerAuthModal()">×</button>
+            <h3 class="modal-headline" id="authModalTitle">Customer Sign In</h3>
+            <div class="auth-form-container">
+                <div class="auth-field-group">
+                    <label class="auth-label">Email Address</label>
+                    <input type="email" placeholder="name@example.com" id="authEmail" class="segment-input form-input-styled">
+                </div>
+                <div class="auth-field-group">
+                    <label class="auth-label">Password</label>
+                    <input type="password" placeholder="••••••••" id="authPassword" class="segment-input form-input-styled">
+                </div>
+            </div>
+            <button class="btn-modal-reserve" id="authSubmitBtn" onclick="handleAuthSubmit()">Sign In to My Account</button>
+            <div class="auth-footer" id="authToggleFooter">
+                Don't have an account? <a href="javascript:void(0)" onclick="toggleAuthState('signup')" class="auth-footer-link">Sign up</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- = ADD RATING MODAL = -->
+    <div class="modal fade" id="addRatingModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3 rounded-4 border-0 shadow">
+          <div class="modal-header border-0">
+            <h5 class="modal-title fw-bold">Submit Guest Rating</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="ratingForm" onsubmit="submitGuestRating(event)">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Registered Email</label>
+                <input type="email" id="modalCustomerEmail" class="form-control" placeholder="123nimanshanadu@gmail.com" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Overall Rating</label>
+                <select id="modalOverallRating" class="form-select" required>
+                    <option value="5" selected>5 ★★★★★ (Excellent)</option>
+                    <option value="4">4 ★★★★☆ (Good)</option>
+                    <option value="3">3 ★★★☆☆ (Average)</option>
+                    <option value="2">2 ★★☆☆☆ (Poor)</option>
+                    <option value="1">1 ★☆☆☆☆ (Terrible)</option>
+                </select>
+              </div>
+
+              <div class="row g-2 mb-3">
+                <div class="col-4">
+                  <label class="form-label small fw-semibold">Cleanliness</label>
+                  <input type="number" id="modalCleanliness" class="form-control" min="1" max="5" value="5" required>
+                </div>
+                <div class="col-4">
+                  <label class="form-label small fw-semibold">Location</label>
+                  <input type="number" id="modalLocation" class="form-control" min="1" max="5" value="5" required>
+                </div>
+                <div class="col-4">
+                  <label class="form-label small fw-semibold">Service</label>
+                  <input type="number" id="modalService" class="form-control" min="1" max="5" value="5" required>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Comment (Optional)</label>
+                <textarea id="modalComment" class="form-control" rows="3" placeholder="Share details about your stay..."></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 fw-bold py-2 rounded-3">Submit Rating</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOOTSTRAP JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- JAVASCRIPT ENGINE -->
+    <script>
+        const API_BASE = 'http://localhost:3000/api';
+        let currentSelectedPropertyId = 'grand-ocean-spa-01';
+
+        // --- HELP CENTER LOGIC ---
+        function openHelpCenterModal() { document.getElementById('helpCenterModal').style.display = 'flex'; }
+        function closeHelpCenterModal() { document.getElementById('helpCenterModal').style.display = 'none'; }
+        
+        function toggleFaq(element) {
+            const answer = element.querySelector('.faq-answer');
+            const icon = element.querySelector('.faq-icon');
+            const isVisible = answer.style.display === 'block';
+
+            document.querySelectorAll('.faq-answer').forEach(a => a.style.display = 'none');
+            document.querySelectorAll('.faq-icon').forEach(i => i.innerText = '+');
+
+            if (!isVisible) {
+                answer.style.display = 'block';
+                icon.innerText = '−';
+            }
+        }
+
+        function filterHelpTopics() {
+            const query = document.getElementById('helpSearchInput').value.toLowerCase();
+            const items = document.querySelectorAll('.faq-item');
+
+            items.forEach(item => {
+                const text = item.innerText.toLowerCase();
+                item.style.display = text.includes(query) ? 'block' : 'none';
+            });
+        }
+
+        function filterFaqCategory(category, evt) {
+            const items = document.querySelectorAll('.faq-item');
+            const buttons = document.querySelectorAll('.faq-cat-btn');
+
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            if(evt && evt.target) {
+                evt.target.classList.add('active');
+            }
+
+            items.forEach(item => {
+                if (category === 'all' || item.dataset.category === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // --- AI CONCIERGE CHAT WIDGET ---
+        function openAiChat() {
+            closeHelpCenterModal();
+            document.getElementById('aiChatWidget').style.display = 'flex';
+        }
+        function closeAiChat() { document.getElementById('aiChatWidget').style.display = 'none'; }
+
+        async function handleAiSendMessage(event) {
+            event.preventDefault();
+            const input = document.getElementById('aiChatInput');
+            const userText = input.value.trim();
+            if (!userText) return;
+
+            const messagesContainer = document.getElementById('aiChatMessages');
+            const userBubble = document.createElement('div');
+            userBubble.style.cssText = "background: #18181B; color: #FFFFFF; padding: 10px 14px; border-radius: 14px 14px 2px 14px; font-size: 13px; max-width: 82%; align-self: flex-end; line-height: 1.4;";
+            userBubble.innerText = userText;
+            messagesContainer.appendChild(userBubble);
+            input.value = '';
+
+            try {
+                const res = await fetch(`${API_BASE}/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userPrompt: userText })
+                });
+                const data = await res.json();
+                const botBubble = document.createElement('div');
+                botBubble.className = 'ai-message-bubble';
+                botBubble.innerText = data.reply || "Thank you! Our support team will assist you shortly.";
+                messagesContainer.appendChild(botBubble);
+            } catch (err) {
+                const botBubble = document.createElement('div');
+                botBubble.className = 'ai-message-bubble';
+                botBubble.innerText = "Thanks for reaching out! Our team is available 24/7 to assist with your stay.";
+                messagesContainer.appendChild(botBubble);
+            }
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // --- BOOKING HISTORY ---
+        async function fetchBookingHistory() {
+            const inputVal = document.getElementById('history-phone-input').value.trim();
+            const resultsContainer = document.getElementById('history-results');
+            if (!inputVal) {
+                resultsContainer.innerHTML = `<p style="color: #ef4444;">Please enter an email address or phone number.</p>`;
+                return;
+            }
+
+            try {
+                const isEmail = inputVal.includes('@');
+                const queryParam = isEmail ? `email=${encodeURIComponent(inputVal)}` : `phone=${encodeURIComponent(inputVal)}`;
+                const response = await fetch(`${API_BASE}/bookings/history?${queryParam}`);
+                const data = await response.json();
+
+                if (!data.success || !data.bookings || data.bookings.length === 0) {
+                    resultsContainer.innerHTML = `<p style="color: #64748b;">No past bookings found.</p>`;
+                    return;
+                }
+
+                resultsContainer.innerHTML = data.bookings.map(b => `
+                    <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; background-color: #f8fafc;">
+                        <h3 style="font-size: 1.1rem; font-weight: bold; margin: 0; color: #0f172a;">${b.propertyTitle}</h3>
+                        <p style="font-size: 0.9rem; color: #475569;">Guest: ${b.customerName} | Paid: $${b.totalPaid}</p>
+                    </div>
+                `).join('');
+            } catch (err) {
+                resultsContainer.innerHTML = `<p style="color: #ef4444;">Failed to load booking history.</p>`;
+            }
+        }
+
+        // --- TAB SWITCHER LOGIC ---
+        function switchTab(target) {
+            const staysSection = document.getElementById('staysContainer');
+            const expSection = document.getElementById('experiencesContainer');
+            const hostSection = document.getElementById('hostingContainer');
+
+            if (target === 'hosting') {
+                staysSection.style.display = 'none';
+                expSection.style.display = 'none';
+                hostSection.style.display = 'block';
+            } else if (target === 'experiences') {
+                staysSection.style.display = 'none';
+                hostSection.style.display = 'none';
+                expSection.style.display = 'block';
+            } else {
+                expSection.style.display = 'none';
+                hostSection.style.display = 'none';
+                staysSection.style.display = 'block';
+            }
+        }
+
+        // --- AUTH, HOSTING & CATALOG ---
+        function openCustomerAuthModal() { document.getElementById('customerAuthModal').style.display = 'flex'; }
+        function closeCustomerAuthModal() { document.getElementById('customerAuthModal').style.display = 'none'; }
+        function handleAuthSubmit() { alert('Sign in functionality connected.'); closeCustomerAuthModal(); }
+        function toggleAuthState(state) { alert('Toggle auth state: ' + state); }
+
+        function calculateHostEarnings(val) {
+            const nightLabel = document.getElementById('calcNightsLabel');
+            const calcOutput = document.getElementById('calcOutput');
+            if (nightLabel) nightLabel.textContent = val;
+            if (calcOutput) calcOutput.textContent = `$${(val * 350).toLocaleString()}`;
+        }
+
+        function handleHostSubmission(e) {
+            e.preventDefault();
+            alert('Property submitted successfully!');
+        }
+
+        async function loadCatalog() {
+            const grid = document.getElementById('propertiesDisplayGrid');
+            const whereQuery = (document.getElementById('searchWhere')?.value || '').trim().toLowerCase();
+            const categoryQuery = (document.getElementById('propertyTypeSelect')?.value || '').trim().toLowerCase();
+
+            try {
+                const response = await fetch(`${API_BASE}/properties`);
+                const items = await response.json();
+                
+                const filteredItems = items.filter(item => {
+                    const matchesWhere = !whereQuery || 
+                        (item.title && item.title.toLowerCase().includes(whereQuery)) || 
+                        (item.location && item.location.toLowerCase().includes(whereQuery));
+                    
+                    const matchesCategory = !categoryQuery || 
+                        (item.category && item.category.toLowerCase().includes(categoryQuery)) ||
+                        (item.title && item.title.toLowerCase().includes(categoryQuery));
+
+                    return matchesWhere && matchesCategory;
+                });
+
+                grid.innerHTML = '';
+
+                if (filteredItems.length === 0) {
+                    grid.innerHTML = '<div class="state-empty-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #64748b;">No properties match your search criteria.</div>';
+                    return;
+                }
+
+            
+                if (filteredItems.length > 0 && filteredItems[0]._id) {
+                    currentSelectedPropertyId = filteredItems[0]._id;
+                    loadPropertyReviewStats(filteredItems[0]._id, filteredItems[0].title);
+                }
+
+                filteredItems.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'property-luxury-card';
+                    card.innerHTML = `
+                        <div class="image-frame" onclick="viewPropertyDetails(${JSON.stringify(item).replace(/"/g, '&quot;')})">
+                            <span class="premium-badge">Verified Luxury</span>
+                            <img src="${item.image}" alt="${item.title}">
+                        </div>
+                        <div class="card-meta-row" onclick="viewPropertyDetails(${JSON.stringify(item).replace(/"/g, '&quot;')})">
+                            <h4 class="property-title">${item.title}</h4>
+                            <span class="rating-indicator">★ ${item.rating}</span>
+                        </div>
+                        <p class="property-geo">${item.location}</p>
+                        <div class="card-price-row">
+                            <span class="property-price"><strong>$${item.price}</strong> <span>/ night</span></span>
+                            <button class="btn-action-reserve" onclick="viewPropertyDetails(${JSON.stringify(item).replace(/"/g, '&quot;')})">View Details</button>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            } catch (err) {
+                grid.innerHTML = '<div class="state-empty-message">Cannot load properties from active database configuration.</div>';
+            }
+        }
+
+        // --- RATING & REVIEW SYSTEM LOGIC ---
+        function openRatingModal() {
+            const modalEl = document.getElementById('addRatingModal');
+            if (window.bootstrap && bootstrap.Modal) {
+                const modal = new bootstrap.Modal(modalEl);
+                modal.show();
+            } else {
+                modalEl.classList.add('show');
+                modalEl.style.display = 'block';
+            }
+        }
+
+        async function loadPropertyReviewStats(propertyId = currentSelectedPropertyId, title = '') {
+            try {
+                const res = await fetch(`${API_BASE}/properties/${propertyId}/reviews`);
+                const data = await res.json();
+
+                if (!data.success) return;
+
+                if (title && document.getElementById('reviewPropertyTitle')) {
+                    document.getElementById('reviewPropertyTitle').textContent = `${title} - Guest Ratings`;
+                }
+
+                // Update text metrics
+                if (document.getElementById('overallScore')) document.getElementById('overallScore').textContent = data.avgRating;
+                if (document.getElementById('totalReviewsCount')) document.getElementById('totalReviewsCount').textContent = data.totalReviews;
+
+                // Update 1 to 5 Star Distribution Bars
+                for (let star = 1; star <= 5; star++) {
+                    const percentage = data.starPercentages[star] || 0;
+                    const progressBar = document.getElementById(`bar${star}`);
+                    const percentageLabel = document.getElementById(`percent${star}`);
+
+                    if (progressBar && percentageLabel) {
+                        progressBar.style.width = `${percentage}%`;
+                        percentageLabel.textContent = `${percentage}%`;
+                    }
+                }
+
+                
+                updateCategoryBar('cleanliness', data.categories.cleanliness);
+                updateCategoryBar('location', data.categories.location);
+                updateCategoryBar('service', data.categories.service);
+
+            } catch (error) {
+                console.error('Error fetching review analytics:', error);
+            }
+        }
+
+        function updateCategoryBar(categoryName, score) {
+            const scoreElement = document.getElementById(`${categoryName}Score`);
+            const barElement = document.getElementById(`${categoryName}Bar`);
+
+            if (scoreElement && barElement) {
+                scoreElement.textContent = score;
+                const widthPercent = (score / 5) * 100;
+                barElement.style.width = `${widthPercent}%`;
+            }
+        }
+
+        async function submitGuestRating(event) {
+            event.preventDefault();
+
+            const payload = {
+                customerEmail: document.getElementById('modalCustomerEmail').value.trim(),
+                overallRating: document.getElementById('modalOverallRating').value,
+                cleanliness: document.getElementById('modalCleanliness').value,
+                location: document.getElementById('modalLocation').value,
+                service: document.getElementById('modalService').value,
+                comment: document.getElementById('modalComment').value.trim()
+            };
+
+            try {
+                const res = await fetch(`${API_BASE}/properties/${currentSelectedPropertyId}/reviews`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await res.json();
+                if (result.success) {
+                    alert('Rating submitted successfully!');
+
+                    // Close Modal
+                    const modalEl = document.getElementById('addRatingModal');
+                    if (window.bootstrap && bootstrap.Modal) {
+                        const instance = bootstrap.Modal.getInstance(modalEl);
+                        if (instance) instance.hide();
+                    } else {
+                        modalEl.classList.remove('show');
+                        modalEl.style.display = 'none';
+                    }
+
+                    document.getElementById('ratingForm').reset();
+                    loadPropertyReviewStats(currentSelectedPropertyId);
+                } else {
+                    alert('Error: ' + result.error);
+                }
+            } catch (err) {
+                alert('Could not submit rating. Check backend server connection.');
+            }
+        }
+
+        function resetSearchFilters() {
+            if (document.getElementById('searchWhere')) document.getElementById('searchWhere').value = '';
+            if (document.getElementById('propertyTypeSelect')) document.getElementById('propertyTypeSelect').value = '';
+            loadCatalog();
+        }
+
+        function viewPropertyDetails(property) {
+            sessionStorage.setItem('selectedProperty', JSON.stringify(property));
+            window.location.href = 'property-details.html';
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadCatalog();
+        });
+    </script>
+
+    <!-- FOOTER SECTION -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-col footer-brand">
+                <h2 class="footer-logo">StayEase<span>.</span></h2>
+                <p class="footer-desc">
+                    Discover world-class luxury stays, private villas, and curated travel experiences worldwide.
+                </p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook">🌐</a>
+                    <a href="#" aria-label="Instagram">📸</a>
+                    <a href="#" aria-label="Twitter">🐦</a>
+                    <a href="#" aria-label="LinkedIn">💼</a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h3>Explore</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Global Destinations</a></li>
+                    <li><a href="#">Trending Cabins</a></li>
+                    <li><a href="#">Luxury Penthouses</a></li>
+                    <li><a href="#">Private Islands</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>Support</h3>
+                <ul class="footer-links">
+                    <li><a href="javascript:void(0)" onclick="openHelpCenterModal()">Help Center</a></li>
+                    <li><a href="javascript:void(0)" onclick="openHelpCenterModal()">Cancellation Options</a></li>
+                    <li><a href="javascript:void(0)" onclick="openHelpCenterModal()">Safety Guidelines</a></li>
+                    <li><a href="#">Admin Portal</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col footer-newsletter">
+                <h3>Stay Updated</h3>
+                <p>Subscribe to receive exclusive deals and new luxury property drops.</p>
+                <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed to StayEase updates!');">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit">Join</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 StayEase Inc. All rights reserved.</p>
+            <div class="legal-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Preferences</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

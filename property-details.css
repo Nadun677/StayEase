@@ -1,0 +1,370 @@
+:root {
+    --brand-teal: #005A60;
+    --brand-teal-hover: #004449;
+    --bg-light: #F4F6F8;
+    --border-color: #E2E8F0;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+}
+
+body {
+    background-color: var(--bg-light);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-main);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+/* Breadcrumbs Navigation */
+.breadcrumb-nav {
+    padding: 16px 0 12px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.breadcrumb-nav a {
+    color: #0284c7;
+    text-decoration: none;
+}
+
+.breadcrumb-nav a:hover {
+    text-decoration: underline;
+}
+
+/* Banner Image Gallery */
+.gallery-banner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    max-height: 380px;
+}
+
+.gallery-banner img {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+}
+
+/* Sticky Navigation Tab Bar */
+.details-tab-bar {
+    background-color: var(--brand-teal);
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.tab-links {
+    display: flex;
+    gap: 24px;
+}
+
+.tab-links a {
+    color: #e2e8f0;
+    text-decoration: none;
+    padding: 14px 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease-in-out;
+}
+
+.tab-links a.active, 
+.tab-links a:hover {
+    color: #ffffff;
+    border-bottom-color: #ffffff;
+}
+
+.btn-tab-inquiry {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-tab-inquiry:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* Main Grid Layout */
+.property-grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+@media (max-width: 900px) {
+    .property-grid-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Section Cards (Left Column) */
+.section-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.section-card h2 {
+    margin-top: 0;
+    font-size: 1.25rem;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.section-card h3 {
+    margin: 0 0 4px 0;
+    font-size: 1.3rem;
+    color: #0f172a;
+}
+
+.location-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+}
+
+.section-divider {
+    border: 0;
+    border-top: 1px solid #f1f5f9;
+    margin: 16px 0;
+}
+
+.price-range {
+    font-weight: 700;
+    color: #0f172a;
+    font-size: 0.95rem;
+}
+
+.overview-text {
+    font-size: 0.85rem;
+    color: #475569;
+    line-height: 1.5;
+}
+
+/* Facilities List */
+.facilities-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 16px;
+    font-size: 0.88rem;
+    color: #334155;
+}
+
+.facility-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+}
+
+/* Rooms Grid */
+.rooms-flex-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 600px) {
+    .rooms-flex-container { 
+        grid-template-columns: 1fr; 
+    }
+}
+
+.room-card {
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.room-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.room-card-body {
+    padding: 14px;
+}
+
+.room-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--brand-teal);
+    margin: 0 0 6px;
+}
+
+.room-status {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.room-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 10px;
+    font-size: 0.85rem;
+}
+
+.room-price {
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.room-parking-info {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+/* Contact Details & Map */
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 600px) {
+    .contact-grid { 
+        grid-template-columns: 1fr; 
+    }
+}
+
+.contact-info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 0.85rem;
+    color: #334155;
+}
+
+.contact-info-item {
+    display: flex;
+    gap: 10px;
+}
+
+.contact-map-frame iframe {
+    width: 100%;
+    height: 180px;
+    border-radius: 8px;
+    border: none;
+}
+
+/* Sidebar Booking Inquiry Box (Right Column) */
+.sidebar-inquiry-box {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 60px;
+}
+
+.sidebar-inquiry-box h3 {
+    margin: 0 0 4px;
+    color: var(--brand-teal);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.sidebar-inquiry-box p {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin: 0 0 16px;
+    line-height: 1.3;
+}
+
+.inquiry-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.form-row-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+}
+
+.form-field-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+.inquiry-form input, 
+.inquiry-form select, 
+.inquiry-form textarea {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 0.82rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.inquiry-form input:focus, 
+.inquiry-form select:focus, 
+.inquiry-form textarea:focus {
+    border-color: var(--brand-teal);
+}
+
+.inquiry-form textarea {
+    resize: vertical;
+    height: 60px;
+}
+
+.btn-submit-inquiry {
+    background-color: var(--brand-teal);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-submit-inquiry:hover {
+    background-color: var(--brand-teal-hover);
+}
